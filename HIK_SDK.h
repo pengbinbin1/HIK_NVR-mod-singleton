@@ -8,14 +8,15 @@
 typedef void (*PlaybackCallBack)(LONG lPlayHandle,DWORD dwDataType,BYTE  *pBuffer,DWORD  dwBufSize,DWORD  dwUser);
 class HIK_SDK{
 
-private:	
+public:
 	HIK_SDK();
 	~HIK_SDK();
-public:
-	static HIK_SDK &GetHikSdkInstance(){
-		static HIK_SDK  instance ;
-		return instance;
-	}
+
+//public:
+    //static HIK_SDK &GetHikSdkInstance(){
+        //static HIK_SDK  instance ;
+    //	return instance;
+    //}
 public:
 	/*
 		Description: Get recoder file from nvr by time
@@ -25,7 +26,7 @@ public:
 		return:
 		    errcode 0:success else:failed
 	*/
-	int Init(NET_DVR_USER_LOGIN_INFO loginInfo,NET_DVR_DEVICEINFO_V40& deviceInfo);
+    LONG Init(NET_DVR_USER_LOGIN_INFO loginInfo,NET_DVR_DEVICEINFO_V40& deviceInfo);
 
 	/*
 		Description: Get recoder file from nvr by time
@@ -37,7 +38,7 @@ public:
 		return:
 		    errcode 0:success else:failed
 	*/
-	int SaveFileByTime(NET_DVR_TIME startTime,NET_DVR_TIME stopTime,LONG chanl, char* fileName);
+    int SaveFileByTime(LONG userID,NET_DVR_TIME startTime,NET_DVR_TIME stopTime,LONG chanl, char* fileName);
 
 	/*
 		Description:Save file by name
@@ -47,7 +48,7 @@ public:
 		return:
 		    errcode 0:success else:failed
 	*/
-	int SaveFileByName( char* NVRFileName, char* destFileName );
+    int SaveFileByName(LONG userID, char* NVRFileName, char* destFileName );
 
 	/*
 		Description:Playback recoder by name
@@ -57,7 +58,7 @@ public:
 		return:
 		    errcode 0:success else:failed
 	*/
-	int PlayBackByName(char* NVRFileName,PlaybackCallBack callback);
+    int PlayBackByName(LONG userID,char* NVRFileName,PlaybackCallBack callback);
 
 	/*
 		Description:Playback recoder from nvr by time
@@ -69,7 +70,7 @@ public:
  		return:
 		    errcode 0:success else:failed
 	*/
-	int PlayBackByTime(NET_DVR_TIME startTime,NET_DVR_TIME stopTime,LONG chanl,PlaybackCallBack callback);
+    int PlayBackByTime(LONG userID,NET_DVR_TIME startTime,NET_DVR_TIME stopTime,LONG chanl,PlaybackCallBack callback);
 
 	/*
 		Description: Release Source
@@ -77,7 +78,7 @@ public:
 		return:
 			errcode 0:success else:failed
 	*/
-	int Destory();
+    int Destory(LONG userID);
 
 	/*
 		Description search file   from nvr by time
@@ -89,7 +90,7 @@ public:
  		return:
 		    errcode 0:success else:failed
 	*/
-	int FindFile(NET_DVR_TIME startTime,NET_DVR_TIME stopTime,LONG chanl, NET_DVR_FIND_DATA&  struFileData);
+    int FindFile(LONG userID,NET_DVR_TIME startTime,NET_DVR_TIME stopTime,LONG chanl, NET_DVR_FIND_DATA&  struFileData);
 
     /*
         Description get config from HIK DVR
@@ -101,7 +102,7 @@ public:
             errcode 0:success else:failed
     */
 
-    int GetDVRConfig(DWORD command, LONG group, NET_DVR_IPPARACFG_V40 &deviceCfg);
+    int GetDVRConfig(LONG userID,DWORD command, LONG group, NET_DVR_IPPARACFG_V40 &deviceCfg);
 
     /*
         Description get Port from HIK DVR
@@ -111,8 +112,8 @@ public:
         return:
             errcode 0:success else:failed
     */
-    int GetPort(DWORD command, NET_DVR_NAT_CFG &deviceCfg );
+    int GetPort(LONG userID,DWORD command, NET_DVR_NAT_CFG &deviceCfg );
 private:
-	LONG m_UserID;
+    //LONG m_UserID;
 
 };

@@ -21,37 +21,37 @@ int main()
 	strcpy(login.sPassword,"abc123456");
 	login.wPort = 8000;
 	login.bUseAsynLogin = FALSE;
-
+    HIK_SDK sdk;
 	NET_DVR_DEVICEINFO_V40 devinfo = {0};
-	ret = HIK_SDK::GetHikSdkInstance().Init(login,devinfo);
-	if (ret!= 0)
+	LONG userid = sdk.Init(login,devinfo);
+	if (userid< 0)
 	{
-		printf("Init failed,ret = %d\n",ret);
+		printf("Init failed,ret = %d\n",userid);
 		return ret;
 	}
-
+	printf("userid = %d\n",userid);
 	NET_DVR_TIME startTime;
-	startTime.dwYear = 2018;
-	startTime.dwMonth = 9;
-	startTime.dwDay = 26;
+	startTime.dwYear = 2019;
+	startTime.dwMonth = 5;
+	startTime.dwDay = 28;
 	startTime.dwHour = 10;
 	startTime.dwMinute = 0;
 	startTime.dwSecond = 0;
 	
 	NET_DVR_TIME stopTime;
-	stopTime.dwYear = 2018;
-	stopTime.dwMonth = 9;
-	stopTime.dwDay = 26;
+	stopTime.dwYear = 2019;
+	stopTime.dwMonth = 5;
+	stopTime.dwDay = 28;
 	stopTime.dwHour =10;
-	stopTime.dwMinute = 3;
-	stopTime.dwSecond =0;
-	LONG chanl = 33;
-	char* fileName = "./test.mp4";
-//#define SAVEFILE_BY_TIME
-#define PLAYBACK_BY_NAME
+	stopTime.dwMinute = 0;
+	stopTime.dwSecond =20;
+	LONG chanl = 36;
+	char* fileName = "./test36.mp4";
+#define SAVEFILE_BY_TIME
+//#define PLAYBACK_BY_NAME
 
 #ifdef SAVEFILE_BY_TIME
-	ret = HIK_SDK::GetHikSdkInstance().SaveFileByTime(startTime,stopTime,chanl,fileName);
+	ret = sdk.SaveFileByTime(userid,startTime,stopTime,chanl,fileName);
 	if (ret !=0)
 	{
 		printf("SavefileByTime failed,ret = %d\n",ret);
@@ -60,7 +60,7 @@ int main()
 #endif
 
 #ifdef PLAYBACK_BY_TIME
-	ret = HIK_SDK::GetHikSdkInstance().PlayBackByTime(startTime,stopTime,chanl,PlayBackCallback);
+	ret = sdk.PlayBackByTime(userid,startTime,stopTime,chanl,PlayBackCallback);
 	if (ret!=0)
 	{
 		printf("Play back by time failed,err = %d\n",ret);
@@ -69,7 +69,7 @@ int main()
 #endif
 
 	NET_DVR_FIND_DATA file_data;
-	ret = HIK_SDK::GetHikSdkInstance().FindFile(startTime,stopTime,chanl,file_data);
+	ret = sdk.FindFile(userid,startTime,stopTime,chanl,file_data);
 	if (ret != 0)
 	{
 		printf("@@@ Find file filed\n");
@@ -82,7 +82,7 @@ int main()
 	}
 
 #ifdef SAVEFILE_BY_NAME
-	ret = HIK_SDK::GetHikSdkInstance().SaveFileByName(file_data.sFileName,"./peng.mp4");
+	ret = sdk.SaveFileByName(userid,file_data.sFileName,"./peng.mp4");
 	if (ret !=0)
 	{
 		printf("@@@@ savefile by name failed,err = %d\n",ret);
@@ -90,7 +90,7 @@ int main()
 #endif
 
 #ifdef PLAYBACK_BY_NAME
-	ret = HIK_SDK::GetHikSdkInstance().PlayBackByName(file_data.sFileName,PlayBackCallback);
+	ret = sdk.PlayBackByName(userid,file_data.sFileName,PlayBackCallback);
 	if (ret!=0)
 	{
 		printf("@@@@ play back by name failed,err = %d\n",ret);
@@ -98,7 +98,7 @@ int main()
 	sleep(10);
 #endif
 
-	ret = HIK_SDK::GetHikSdkInstance().Destory();
+	ret = sdk.Destory(userid);
 	if (ret!= 0)
 	{
 		printf("destroy failed,err = %d\n",ret);

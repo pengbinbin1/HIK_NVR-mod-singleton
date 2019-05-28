@@ -7,15 +7,15 @@ static int init_num =0;
 static int uninit_num =0;
 
 HIK_SDK::HIK_SDK(){
-	m_UserID = -1;
+    //m_UserID = -1;
 
 }
 
 HIK_SDK::~HIK_SDK(){
-	m_UserID = -1;
+    //m_UserID = -1;
 }
 
-int HIK_SDK::Init(NET_DVR_USER_LOGIN_INFO loginInfo,NET_DVR_DEVICEINFO_V40& deviceInfo)
+LONG HIK_SDK::Init(NET_DVR_USER_LOGIN_INFO loginInfo,NET_DVR_DEVICEINFO_V40& deviceInfo)
 {
 	int err =0;
     init_num +=1;
@@ -54,26 +54,26 @@ int HIK_SDK::Init(NET_DVR_USER_LOGIN_INFO loginInfo,NET_DVR_DEVICEINFO_V40& devi
 	}
 
 	deviceInfo = {0};
-	m_UserID = NET_DVR_Login_V40(&loginInfo,&deviceInfo);
-	if (m_UserID<0)
+    LONG UserID = NET_DVR_Login_V40(&loginInfo,&deviceInfo);
+    if (UserID<0)
 	{
 		err= NET_DVR_GetLastError();
                 printf("@@@login failed err = %d,line=%d\n ",err,__LINE__);
 		return err;
 	}
 
-	return 0;
+    return UserID;
 }
 
-int HIK_SDK::SaveFileByTime(NET_DVR_TIME startTime,NET_DVR_TIME stopTime,LONG chanl,char* fileName)
+int HIK_SDK::SaveFileByTime(LONG UserID,NET_DVR_TIME startTime,NET_DVR_TIME stopTime,LONG chanl,char* fileName)
 {
 	int err = 0;
-	if (m_UserID <0)
+    if (UserID <0)
 	{
-		printf("@@@ m_UserID is invalied\n");
+        printf("@@@ UserID is invalied\n");
 		return -1;
 	}
-	int hdPlayBack = NET_DVR_GetFileByTime(m_UserID,chanl,&startTime,&stopTime,fileName);
+    int hdPlayBack = NET_DVR_GetFileByTime(UserID,chanl,&startTime,&stopTime,fileName);
 	if (hdPlayBack<0)
 	{
 		err = NET_DVR_GetLastError();
@@ -93,7 +93,7 @@ int HIK_SDK::SaveFileByTime(NET_DVR_TIME startTime,NET_DVR_TIME stopTime,LONG ch
 	{
 		pos = NET_DVR_GetDownloadPos(hdPlayBack);
 		printf("progress = %d\n",pos);
-		sleep(3);
+        sleep(2);
 	}
 
 	if (!NET_DVR_StopGetFile(hdPlayBack))
@@ -112,16 +112,16 @@ int HIK_SDK::SaveFileByTime(NET_DVR_TIME startTime,NET_DVR_TIME stopTime,LONG ch
 	return 0;
 }
 
-int HIK_SDK::PlayBackByTime(NET_DVR_TIME startTime,NET_DVR_TIME stopTime,LONG chanl,PlaybackCallBack callback)
+int HIK_SDK::PlayBackByTime(LONG UserID,NET_DVR_TIME startTime,NET_DVR_TIME stopTime,LONG chanl,PlaybackCallBack callback)
 {
 	int err = 0;
-	if (m_UserID < 0)
+    if (UserID < 0)
 	{
 		printf("@@@userID is invalid\n");
 		return -1;
 	}
 
-	int hdPlayBack =  NET_DVR_PlayBackByTime(m_UserID,chanl,&startTime,&stopTime,NULL);
+    int hdPlayBack =  NET_DVR_PlayBackByTime(UserID,chanl,&startTime,&stopTime,NULL);
 	if (hdPlayBack<0)
 	{
 		err = NET_DVR_GetLastError();
@@ -153,11 +153,11 @@ int HIK_SDK::PlayBackByTime(NET_DVR_TIME startTime,NET_DVR_TIME stopTime,LONG ch
 	return 0;
 }
 
-int HIK_SDK::Destory(){
+int HIK_SDK::Destory(LONG UserID){
         int err =0;
         uninit_num +=1;
         printf("has call Uninit %d times\n",uninit_num);
-	if (!NET_DVR_Logout_V30(m_UserID))
+    if (!NET_DVR_Logout_V30(UserID))
 	{
                 err = NET_DVR_GetLastError();
                 printf("@@@log out failed,err= %d,line = %d\n",err,__LINE__);
@@ -173,11 +173,11 @@ int HIK_SDK::Destory(){
 
 	return 0;
 }
-int HIK_SDK::FindFile(NET_DVR_TIME startTime,NET_DVR_TIME stopTime,LONG chanl, NET_DVR_FIND_DATA& struFileData)
+int HIK_SDK::FindFile(LONG UserID,NET_DVR_TIME startTime,NET_DVR_TIME stopTime,LONG chanl, NET_DVR_FIND_DATA& struFileData)
 {
 	int err = 0;
 	// start first find,default is all type file,0xff
-	int lFindHandle = NET_DVR_FindFile(m_UserID, chanl, 0xff, &startTime, &stopTime);
+    int lFindHandle = NET_DVR_FindFile(UserID, chanl, 0xff, &startTime, &stopTime);
 	if(lFindHandle < 0)
 	{
 		err = NET_DVR_GetLastError();
@@ -223,10 +223,10 @@ int HIK_SDK::FindFile(NET_DVR_TIME startTime,NET_DVR_TIME stopTime,LONG chanl, N
 	return 0;
 }
 
-int HIK_SDK::SaveFileByName( char* NVRFileName, char* destFileName )
+int HIK_SDK::SaveFileByName(LONG UserID, char* NVRFileName, char* destFileName )
 {
 	int err = 0;
-	int hdPlayback = NET_DVR_GetFileByName(m_UserID,NVRFileName,destFileName);
+    int hdPlayback = NET_DVR_GetFileByName(UserID,NVRFileName,destFileName);
 	if (hdPlayback <0)
 	{
 		err = NET_DVR_GetLastError();
@@ -269,11 +269,11 @@ int HIK_SDK::SaveFileByName( char* NVRFileName, char* destFileName )
 	return 0;
 }
 
-int HIK_SDK::PlayBackByName(char* NVRFileName,PlaybackCallBack callback)
+int HIK_SDK::PlayBackByName(LONG UserID,char* NVRFileName,PlaybackCallBack callback)
 {
 	int err= 0;
 	HWND hWnd = {0};
-	int hdPlayBack = NET_DVR_PlayBackByName(m_UserID,NVRFileName,hWnd);
+    int hdPlayBack = NET_DVR_PlayBackByName(UserID,NVRFileName,hWnd);
 	if (hdPlayBack<0)
 	{
 		err = NET_DVR_GetLastError();
@@ -299,10 +299,10 @@ int HIK_SDK::PlayBackByName(char* NVRFileName,PlaybackCallBack callback)
 	return 0;
 }
 
-int HIK_SDK::GetDVRConfig(DWORD command, LONG group, NET_DVR_IPPARACFG_V40 &deviceCfg){
+int HIK_SDK::GetDVRConfig(LONG UserID,DWORD command, LONG group, NET_DVR_IPPARACFG_V40 &deviceCfg){
     int ret =0;
     DWORD returned = 0;
-    if(!NET_DVR_GetDVRConfig(m_UserID,command,group,&deviceCfg,sizeof (NET_DVR_IPPARACFG_V40),&returned))
+    if(!NET_DVR_GetDVRConfig(UserID,command,group,&deviceCfg,sizeof (NET_DVR_IPPARACFG_V40),&returned))
     {
         ret = NET_DVR_GetLastError();
         printf("@@@get cfg from dvr failed.err= %d,line = %d\n",ret,__LINE__);
@@ -313,10 +313,10 @@ int HIK_SDK::GetDVRConfig(DWORD command, LONG group, NET_DVR_IPPARACFG_V40 &devi
 
 }
 
-int HIK_SDK::GetPort(DWORD command, NET_DVR_NAT_CFG &deviceCfg){
+int HIK_SDK::GetPort(LONG UserID,DWORD command, NET_DVR_NAT_CFG &deviceCfg){
     int ret = 0;
     DWORD returned = 0;
-    if (!NET_DVR_GetDVRConfig(m_UserID,command,0,&deviceCfg,sizeof (NET_DVR_NAT_CFG),&returned))
+    if (!NET_DVR_GetDVRConfig(UserID,command,0,&deviceCfg,sizeof (NET_DVR_NAT_CFG),&returned))
     {
         ret = NET_DVR_GetLastError();
         printf("@@@get cfg from dvr failed.err= %d,line = %d\n",ret,__LINE__);
