@@ -25,7 +25,7 @@ LONG HIK_SDK::Init(NET_DVR_USER_LOGIN_INFO loginInfo,NET_DVR_DEVICEINFO_V40& dev
 	{
 		err = NET_DVR_GetLastError();
 		printf("@@@log out fialed,err= %d\n",err);
-		return err;
+		return -1;
 	}
 
 	//Print the version info
@@ -59,7 +59,7 @@ LONG HIK_SDK::Init(NET_DVR_USER_LOGIN_INFO loginInfo,NET_DVR_DEVICEINFO_V40& dev
 	{
 		err= NET_DVR_GetLastError();
                 printf("@@@login failed err = %d,line=%d\n ",err,__LINE__);
-		return err;
+		return -1;
 	}
 
     return UserID;
