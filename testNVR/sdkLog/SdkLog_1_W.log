@@ -1,0 +1,27 @@
+[2019-07-09 10:23:04.184][INF] The COM:HCCoreBase ver is 1.0.0.1, 2018_06_01. Async:1.
+[2019-07-09 10:23:04.184][INF] The COM:Core ver is 6.0.2.35, 2019_04_11. Async:1.
+[2019-07-09 10:23:04.184][INF] This HCNetSDK ver is 6.0.2.35 Ver 2019_04_11.
+[2019-07-09 10:23:04.184][INF] Login dev 10.58.123.42:8000.
+[2019-07-09 10:23:04.184][INF] Private connect 10.58.123.42:8000 sock=35 this=0x920a5524 cmd=0x10000 port=55990
+[2019-07-09 10:23:04.184][INF] LogonDev1 in[10.58.123.42:8000]
+[2019-07-09 10:23:04.185][INF] CCoreGlobalCtrlBase::LoadDSoByPath, load path[libcrypto.so] success, handle[-1844792160]
+[2019-07-09 10:23:04.185][INF] CCoreGlobalCtrlBase::LoadDSo, load path[libcrypto.so] success, handle[-1844792160]
+[2019-07-09 10:23:04.185][INF] CCoreGlobalCtrlBase::LoadDSoByPath, load path[libssl.so] success, handle[-1844790960]
+[2019-07-09 10:23:04.185][INF] CCoreGlobalCtrlBase::LoadDSo, load path[libssl.so] success, handle[-1844790960]
+[2019-07-09 10:23:04.185][INF] SSLTRANSAPI::LoadAPI, libeay, Load Real Path[../lib/libcrypto.so]
+[2019-07-09 10:23:04.185][INF] SSLTRANSAPI::LoadAPI, libssl, Load Real Path[../lib/libssl.so]
+[2019-07-09 10:23:04.185][INF] SSLTRANSAPI::PrintVersion, OpenSSL version info [OpenSSL 1.0.2p  14 Aug 2018]
+[2019-07-09 10:23:04.185][INF] CSSLTrans::SSLCtxInit, dwSSLVersion[0], m_fnClientMethodV23
+[2019-07-09 10:23:04.185][ERR]  GetCAPath, Failed, Invalid pPath
+[2019-07-09 10:23:04.194][ERR]  GetCAPath, Failed, Invalid pPath
+[2019-07-09 10:23:04.197][ERR] AnalyzeLoginParams pSecurityInfo->dwDevTime=423742119,struLoginOutInfo.dwCheckTime=423812180, tickTime=70061
+[2019-07-09 10:23:04.197][DBG] load full path[.//HCNetSDKCom/libHCPlayBack.so] failed, system error: 115
+[2019-07-09 10:23:04.198][INF] AbilityAnalyze---Init-- start
+[2019-07-09 10:23:04.198][DBG] AbilityAnalyze---Init-- over, DeviceList path [/home/peng/HIK/lib/HCNetSDKCom/LocalXml/DeviceList.xml], load result[0]
+[2019-07-09 10:23:04.198][INF] The COM:HCPlayback ver is 6.0.2.35, 2019_04_11.
+[2019-07-09 10:23:04.198][INF] Private connect 10.58.123.42:8000 sock=35 this=0x920a5524 cmd=0x30102 port=55992
+[2019-07-09 10:23:04.200][DBG] [0] time vod pos[0] cur[0], m_nTimePlayLen[0], m_nTimeTotalLen[                                                               0]
+[2019-07-09 10:23:04.685][INF] [0] PLAYBACK_ALLFILEEND
+[2019-07-09 10:23:08.200][INF] COM_Logout[0][1]
+[2019-07-09 10:23:08.200][DBG] CUserMgr::UnRegisterHeartProxy[0]
+[2019-07-09 10:23:08.201][INF] Private connect 10.58.123.42:8000 sock=35 this=0x920a5524 cmd=0x10100 port=55994

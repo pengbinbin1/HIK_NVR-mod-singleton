@@ -3,8 +3,9 @@ TARGET = libHIK_SDK.so
 OBJ = $(patsubst %.cpp, %.o, $(wildcard *.cpp ))
 
 all:$(OBJ)
-	g++  -shared -fPIC -o libHIK_SDK.so $^  -L ../lib -Wl,-rpath=./:./HCNetSDKCom:../lib -lhcnetsdk
-	cp libHIK_SDK.so ./lib    
+	g++  -shared -fPIC -o libHIK_SDK.so $^  -L ../lib -Wl,-rpath=./:../lib/HCNetSDKCom:../lib -lhcnetsdk
+	cp libHIK_SDK.so ./lib
+	cp libHIK_SDK.so ../lib
 .cpp.o:
 	g++  -g -fPIC -std=c++11 -O0 -c $< -o $@
 
